@@ -139,7 +139,8 @@ const MyModal  = ({navigation}) => (
 
 const Root = () => {
   return(
-    <NavigationContainer>
+    <NavigationContainer
+    onStateChange={(state) => console.log("new state is", state)}>
     <RootStack.Navigator mode="modal">
       <RootStack.Screen
       name='main'
