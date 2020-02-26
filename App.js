@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import {View, Text, StyleSheet, FlatList, Alert, Button, Image} from 'react-native'
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 function LogoTitle() {
   return (
@@ -11,11 +12,11 @@ function LogoTitle() {
     </Text>
   );
 }
-
-const HomeScreen = ({navigation, route})=> {
-  console.log(route)
-  return(
-    
+const MyHome = ({navigation, route}) => {
+  // console.log(navigation);
+  // console.log('------------');
+  // console.log(route.params.greeting)
+  return (
     <View style={{
       flex: 1, alignItems: 'center', justifyContent: 'center'
     }}>
@@ -23,8 +24,47 @@ const HomeScreen = ({navigation, route})=> {
         {route.params.greeting}
       </Text>
       <Button onPress={() =>navigation.navigate('Details')} title="details"/>
+      <Button onPress={() =>navigation.navigate('Anime')} title="koi no uta"/>
 
     </View>
+  )
+}
+const Anime = ({navigation, route}) => {
+  ///console.log(...props)
+  return(
+    <View style={{
+      flex: 1, alignItems: 'center', justifyContent: 'center'
+      }}>
+      <Text>
+        Hiroi uchuu no kazu aru hitotsu
+        Aoi chikyuu no hiroi sekai de
+        Chiisana koi no omoi wa todoku
+        Chiisana shima no anata no moto e
+        Anata to deai toki wa nagareru
+        Omoi wo kometa tegami no furueru
+        Itsushika futari tagai ni hibiku
+        toki ni hageshiku toki ni setsunaku
+        hibiku wa tooku haruka kanata e
+        yasashi uta wa sekai wo kaeru
+      </Text>
+      <Button onPress={() =>navigation.navigate('Details')} title="details"/>
+      <Button onPress={() =>navigation.navigate('myhome')} title="my home"/>
+
+    </View>
+  )
+}
+const Tab = createBottomTabNavigator();
+const HomeScreen = ({navigation, route})=> {
+  //console.log(route)
+  return(
+
+      <Tab.Navigator>
+        <Tab.Screen name="myhome" component={MyHome} initialParams={{greeting: "hola"}}>
+    </Tab.Screen>
+    <Tab.Screen name="Anime" component={Anime}>
+    </Tab.Screen>
+    </Tab.Navigator>
+
   )
 }
 const DetailsScreen = ({navigation, route}) =>{
@@ -50,6 +90,8 @@ return(
       <Button onPress={() =>navigation.push('Details', {greeting: "konnichiwa!"})} title="details"/>
       <Button onPress={() =>navigation.popToTop()} title="pop to top"/>
       <Button onPress={() =>navigation.setParams({greeting: "hajimemashite"})} title="change greeting"/>
+      <Button onPress={() =>navigation.navigate('Home', {screen: 'Anime'})} title="Anime"/>
+
     
 
   </View>
@@ -70,10 +112,7 @@ const App = () => {
           fontWeight: 'bold'
         }    
       }}>
-        <Stack.Screen name="Home" component={HomeScreen} options={{
-          headerTitle: props => <LogoTitle {...props} />
-
-        }} initialParams={{greeting: "hola"}}/>
+        <Stack.Screen name="Home" component={HomeScreen} initialParams={{greeting: "hola"}}/>
         <Stack.Screen name="Details" component={DetailsScreen} initialParams={{greeting: "hello there!"}} 
           options={({route}) => {
              console.log(route)
