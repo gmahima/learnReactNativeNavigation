@@ -25,6 +25,7 @@ const MyHome = ({navigation, route}) => {
       </Text>
       <Button onPress={() =>navigation.navigate('Details')} title="details"/>
       <Button onPress={() =>navigation.navigate('Anime')} title="koi no uta"/>
+      <Button title="go to modal" onPress={() => navigation.navigate("MyModal")}/>
 
     </View>
   )
@@ -63,6 +64,8 @@ const HomeScreen = ({navigation, route})=> {
     </Tab.Screen>
     <Tab.Screen name="Anime" component={Anime}>
     </Tab.Screen>
+
+   
     </Tab.Navigator>
 
   )
@@ -98,10 +101,11 @@ return(
 )}
 
 const Stack = createStackNavigator();
+const RootStack = createStackNavigator();
 
 const App = () => {
   return(
-    <NavigationContainer>
+
       <Stack.Navigator initialRouteName="Home" screenOptions={{
         headerStyle:{
           backgroundColor: "#6CC5F8"  
@@ -123,8 +127,32 @@ const App = () => {
         />
       </Stack.Navigator>
 
-    </NavigationContainer>
+
   )
 }
+const MyModal  = ({navigation}) => (
+  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text style={{ fontSize: 30 }}>This is a modal!</Text>
+      <Button onPress={() => navigation.goBack()} title="Dismiss" />
+    </View>
+)
 
-export default App
+const Root = () => {
+  return(
+    <NavigationContainer>
+    <RootStack.Navigator mode="modal">
+      <RootStack.Screen
+      name='main'
+      component={App}
+      options={{headerShown: false}} />
+      <RootStack.Screen
+      name="MyModal"
+      component={MyModal} />
+
+
+    </RootStack.Navigator>
+    </NavigationContainer>
+  )
+
+}
+export default Root
